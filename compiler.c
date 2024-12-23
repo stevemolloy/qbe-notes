@@ -140,7 +140,7 @@ Expr *parse_expr_mult(Lexemes *lexemes)
 {
     Expr *lhs = parse_primary(lexemes);
     if (!lhs) return NULL;
-    if (lexemes->pos < lexemes->count && lexemes->items[lexemes->pos].token == '*') {
+    while (lexemes->pos < lexemes->count && lexemes->items[lexemes->pos].token == '*') {
         lexemes->pos += 1;
         Expr *rhs = parse_primary(lexemes);
         if (!rhs) return NULL;
@@ -155,7 +155,7 @@ Expr *parse_expr_mult(Lexemes *lexemes)
                 }
             }
         };
-        return mult;
+        lhs = mult;
     }
     return lhs;
 }
@@ -164,7 +164,7 @@ Expr *parse_expr_plus(Lexemes *lexemes)
 {
     Expr *lhs = parse_expr_mult(lexemes);
     if (!lhs) return NULL;
-    if (lexemes->pos < lexemes->count && lexemes->items[lexemes->pos].token == '+') {
+    while (lexemes->pos < lexemes->count && lexemes->items[lexemes->pos].token == '+') {
         lexemes->pos += 1;
         Expr *rhs = parse_expr_mult(lexemes);
         if (!rhs) return NULL;
@@ -179,7 +179,7 @@ Expr *parse_expr_plus(Lexemes *lexemes)
                 }
             }
         };
-        return plus;
+        lhs = plus;
     }
     return lhs;
 }
